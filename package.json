@@ -1,0 +1,14 @@
+{
+  "name": "com.extelen.diagonalfade",
+  "version": "1.0.0",
+  "displayName": "Extelen Diagonal Fade",
+  "description": "A horizontal fade animation with diagonal bars in the sides",
+  "unity": "2020.3", 
+  "dependencies": {
+  },
+  "keywords": ["fade", "animation", "scene"],
+  "author": {
+      "name": "Rodrigo Saguer",
+      "email": "extelendev@gmail.com"
+  }
+}
