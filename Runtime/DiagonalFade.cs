@@ -77,18 +77,9 @@ public class DiagonalFade : MonoBehaviour
     }
 
     //Non Static
-    public void Fade(int buildIndex)
+    public void Fade(int buildIndex, UnityEvent calls = null)
     {
         if (m_routine != null) return;
-        gameObject.SetActive(true);
-
-        m_routine = StartCoroutine(FadeAnimation(buildIndex, null));
-    }
-    public void Fade(int buildIndex, UnityEvent calls)
-    {
-        if (m_routine != null) return;
-        gameObject.SetActive(true);
-
         m_routine = StartCoroutine(FadeAnimation(buildIndex, calls));
     }
 
@@ -102,7 +93,6 @@ public class DiagonalFade : MonoBehaviour
     private IEnumerator FadeAnimation(int roomIndex, UnityEvent calls)
     {
         //Dont destroy object in load.
-        DontDestroyOnLoad(gameObject);
         m_childRect.gameObject.SetActive(true);
 
         //Load scene async.
@@ -132,7 +122,6 @@ public class DiagonalFade : MonoBehaviour
         if (m_async.progress >= 0.9f) m_async.allowSceneActivation = true;
         else
         {
-
             //Set load percent.
             m_loadPercent = m_async.progress * 100f;
             if (m_loadingPercentCall != null) m_loadingPercentCall.Invoke(m_loadPercent);
@@ -141,8 +130,8 @@ public class DiagonalFade : MonoBehaviour
 
         //Set 100% load percent and invoke calls.
         m_loadPercent = 100;
-        if (m_loadingPercentCall != null) m_loadingPercentCall.Invoke(100);
-        if (calls != null) calls.Invoke();
+        m_loadingPercentCall?.Invoke(100);
+        calls?.Invoke();
 
         //Reset values.
         m_endValue = -m_startValue;
@@ -151,12 +140,13 @@ public class DiagonalFade : MonoBehaviour
         //Finish movement.
         for (float i = 0; i < m_animationTime; i += Time.unscaledDeltaTime)
         {
-
             SetRectPosition(Mathf.Lerp(m_startValue, m_endValue, m_animationCurve.Evaluate(i / m_animationTime)));
             yield return null;
         }
 
-        gameObject.SetActive(false);
+        m_routine = null;
+
+        m_childRect.gameObject.SetActive(false);
     }
 }
 
