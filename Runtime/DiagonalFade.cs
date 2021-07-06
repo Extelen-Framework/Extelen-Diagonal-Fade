@@ -80,11 +80,15 @@ public class DiagonalFade : MonoBehaviour
     public void Fade(int buildIndex)
     {
         if (m_routine != null) return;
+        gameObject.SetActive(true);
+
         m_routine = StartCoroutine(FadeAnimation(buildIndex, null));
     }
     public void Fade(int buildIndex, UnityEvent calls)
     {
         if (m_routine != null) return;
+        gameObject.SetActive(true);
+
         m_routine = StartCoroutine(FadeAnimation(buildIndex, calls));
     }
 
@@ -152,8 +156,7 @@ public class DiagonalFade : MonoBehaviour
             yield return null;
         }
 
-        //Destroy object.
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }
 
